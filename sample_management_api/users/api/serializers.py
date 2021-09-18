@@ -68,18 +68,18 @@ class RefreshTokenSerializer(serializers.Serializer):
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
     def validate(self, attrs):
-        user = User.objects.get(email=attrs['username'])
-        if user.status.lower() == "active":
-            data = super().validate(attrs)
-            refresh = self.get_token(self.user)
+        data = super().validate(attrs)
+        refresh = self.get_token(self.user)
+        print(self.user)
+        if self.user.status.lower() == "active":
             data["refresh"] = str(refresh)
             data["access"] = str(refresh.access_token)
+            user = User.objects.get(email=attrs['username'])
             user.last_login = datetime.datetime.now()
             user.save()
             return data
         else:
             raise serializers.ValidationError({"User": "User is suspended"})
-
 
 # class RegisterSerializer(serializers.ModelSerializer):
 #     email = serializers.EmailField(
