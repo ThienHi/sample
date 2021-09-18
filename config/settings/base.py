@@ -2,6 +2,7 @@
 Base settings to build other settings files upon.
 """
 from pathlib import Path
+from datetime import timedelta
 
 import environ
 
@@ -64,13 +65,14 @@ DJANGO_APPS = [
     "django.forms",
 ]
 THIRD_PARTY_APPS = [
-    "crispy_forms",
     "allauth",
     "allauth.account",
-    "allauth.socialaccount",
     "rest_framework",
-    "rest_framework.authtoken",
+    "rest_framework_simplejwt.token_blacklist",
+    # "rest_framework.authtoken",
     "corsheaders",
+    "djoser",
+
 ]
 
 LOCAL_APPS = [
@@ -279,8 +281,20 @@ REST_FRAMEWORK = {
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
 }
+SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=300)
+}
 
 # django-cors-headers - https://github.com/adamchainz/django-cors-headers#setup
 CORS_URLS_REGEX = r"^/api/.*$"
 # Your stuff...
 # ------------------------------------------------------------------------------
+DEFAULT_FROM_EMAIL = 'lemanhtaictbp@gmail.com'
+SERVER_EMAIL = 'lemanhtaictbp@gmail.com'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'lemanhtaictbp@gmail.com'
+EMAIL_HOST_PASSWORD = 'ykjmyvmgbcgoxmrb'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

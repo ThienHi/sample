@@ -1,11 +1,11 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import include, path
 from django.views import defaults as default_views
 from django.views.generic import TemplateView
 from rest_framework.authtoken.views import obtain_auth_token
+from sample_management_api.users.api.views import MyTokenObtainPairView, LogoutView, PasswordTokenCheckAPI, RequestPasswordResetEmail, SetNewPasswordAPIView
 
 urlpatterns = [
     path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
@@ -17,11 +17,19 @@ urlpatterns = [
     # User management
     path("users/", include("sample_management_api.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
+    path("api/login/", MyTokenObtainPairView.as_view(), name="login"),
+    path("api/logout/", LogoutView.as_view(), name="logout"),
+    path('api/request-reset-email/', RequestPasswordResetEmail.as_view(),
+         name="request-reset-email"),
+    path('api/password-reset/<uidb64>/<token>/',
+         PasswordTokenCheckAPI.as_view(), name='password-reset-confirm'),
+    path('api/password-reset-complete/', SetNewPasswordAPIView.as_view(),
+         name='password-reset-complete'),
+    # path("api/test/", TestView.as_view(), name="list")
+
+
     # Your stuff: custom urls includes go here
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-if settings.DEBUG:
-    # Static file serving when using Gunicorn + Uvicorn for local web socket development
-    urlpatterns += staticfiles_urlpatterns()
 
 # API URLS
 urlpatterns += [

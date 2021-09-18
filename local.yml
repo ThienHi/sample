@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 volumes:
   local_postgres_data: {}
@@ -34,18 +34,18 @@ services:
     env_file:
       - ./.envs/.local/.postgres
 
-  docs:
-    image: sample_management_api_local_docs
-    container_name: docs
-    build:
-      context: .
-      dockerfile: ./compose/local/docs/Dockerfile
-    env_file:
-      - ./.envs/.local/.django
-    volumes:
-      - ./docs:/docs:z
-      - ./config:/app/config:z
-      - ./sample_management_api:/app/sample_management_api:z
-    ports:
-      - "7000:7000"
-    command: /start-docs
+  # docs:
+  #   image: sample_management_api_local_docs
+  #   container_name: docs
+  #   build:
+  #     context: .
+  #     dockerfile: ./compose/local/docs/Dockerfile
+  #   env_file:
+  #     - ./.envs/.local/.django
+  #   volumes:
+  #     - ./docs:/docs:z
+  #     - ./config:/app/config:z
+  #     - ./sample_management_api:/app/sample_management_api:z
+  #   ports:
+  #     - "7000:7000"
+  #   command: /start-docs
